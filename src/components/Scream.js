@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { Link } from "react-router-dom";
 
 //mui stuff
 import Card from "@material-ui/core/Card";
@@ -9,13 +10,19 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = {
   card: {
-    display: "flex"
+    display: "flex",
+    marginBottom: 20
+  },
+  image: {
+    minWidth: 200
+  },
+  content: {
+    padding: 25
   }
 };
 
 class Scream extends Component {
   render() {
-    console.log("made it here");
     const {
       classes,
       scream: {
@@ -28,12 +35,23 @@ class Scream extends Component {
         commentCount
       }
     } = this.props;
-    console.log(body);
+
     return (
-      <Card>
-        <CardMedia image={userImage} title="Profile Image" />
-        <CardContent>
-          <Typography variant="h5">{userHandle} </Typography>
+      <Card className={classes.card}>
+        <CardMedia
+          image={userImage}
+          title="Profile Image"
+          className={classes.image}
+        />
+        <CardContent className={classes.content}>
+          <Typography
+            variant="h5"
+            component={Link}
+            to={`/users/${userHandle}`}
+            color="primary"
+          >
+            {userHandle}
+          </Typography>
           <Typography variant="body2" color="textSecondary">
             {createdAt}
           </Typography>
