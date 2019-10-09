@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import AppIcon from "../images/icons8-user-48.png";
+import axios from "axios";
 
+import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
 const styles = {
   form: {
@@ -13,6 +15,20 @@ const styles = {
   },
   image: {
     margin: "20px auto 20px auto"
+  },
+  pageTitle: {
+    margin: "10px auto 10px auto"
+  },
+  textField: {
+    margin: "10px auto 10px auto"
+  },
+  button: {
+    marginTop: 20
+  },
+  customError: {
+    color: "red",
+    fontSize: ".8rem",
+    marginTop: 10
   }
 };
 
@@ -23,11 +39,28 @@ class login extends Component {
       email: "",
       password: "",
       loading: false,
-      errors: []
+      errors: {}
     };
   }
   handleSubmit = e => {
-    console.log("in the handler");
+    e.preventDefault();
+    this.setState({ loading: true });
+    const userData = {
+      email: this.state.email,
+      password: this.state.password
+    };
+    axios
+      .post("/login", userData)
+      .then(res => {
+        this.setState({ loading: false });
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        this.setState({
+          errors: err.response.data.errors,
+          loading: false
+        });
+      });
   };
 
   handleChange = e => {
@@ -37,6 +70,7 @@ class login extends Component {
   };
   render() {
     const { classes } = this.props;
+    const { errors, loading } = this.state;
     return (
       <Grid container className={classes.form}>
         <Grid item sm />
@@ -54,6 +88,8 @@ class login extends Component {
               className={classes.textField}
               value={this.state.email}
               onChange={this.handleChange}
+              helperText={errors.email}
+              error={errors.email ? true : false}
               fullWidth
             />
             <TextField
@@ -64,8 +100,23 @@ class login extends Component {
               className={classes.textField}
               value={this.state.password}
               onChange={this.handleChange}
+              helperText={errors.password}
+              error={errors.password ? true : false}
               fullWidth
             />
+            {errors.general && (
+              <Typography variant="body2" className={classes.customError}>
+                {errors.general}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Login
+            </Button>
           </form>
         </Grid>
         <Grid item sm />
