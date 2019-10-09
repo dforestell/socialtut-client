@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AppIcon from "../images/icons8-user-48.png";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { relative } from "path";
 
 const styles = {
   form: {
@@ -23,12 +26,17 @@ const styles = {
     margin: "10px auto 10px auto"
   },
   button: {
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 10,
+    position: "relative"
   },
   customError: {
     color: "red",
     fontSize: ".8rem",
     marginTop: 10
+  },
+  progress: {
+    position: "absolute"
   }
 };
 
@@ -114,9 +122,17 @@ class login extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
+              disabled={loading}
             >
               Login
+              {loading && (
+                <CircularProgress size={30} className={classes.progress} />
+              )}
             </Button>
+            <br />
+            <small>
+              Don't have an account? Sign up <Link to="/signup">here!</Link>
+            </small>
           </form>
         </Grid>
         <Grid item sm />
