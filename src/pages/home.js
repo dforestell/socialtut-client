@@ -5,6 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import Scream from "../components/Scream";
 import Profile from "../components/Profile";
 
+import { connect } from "react-redux";
+
 class home extends Component {
   state = {
     screams: null
@@ -42,4 +44,4 @@ class home extends Component {
   }
 }
 
-export default home;
+export default connect()(home);

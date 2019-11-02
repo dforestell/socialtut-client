@@ -47,7 +47,7 @@ if (token) {
     window.location.href = "/login";
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.defaults.headers.common["Authorization"] = token;
     store.dispatch(getUserData());
   }
 }
